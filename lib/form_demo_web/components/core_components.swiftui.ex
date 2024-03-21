@@ -361,11 +361,10 @@ defmodule FormDemoWeb.CoreComponents.SwiftUI do
   def button(%{ type: "submit" } = assigns) do
     ~LVN"""
     <Section>
-      <LiveSubmitButton class="button-style-borderedProminent control-size-large list-row-insets-EdgeInsets() list-row-background-:background">
+      <LiveSubmitButton class="button-style-borderedProminent control-size-large list-row-insets-EdgeInsets() list-row-background-:empty">
         <Group class="max-w-infinity bold">
           <%= render_slot(@inner_block) %>
         </Group>
-        <Rectangle template="background" class="fg-tint" />
       </LiveSubmitButton>
     </Section>
     """
