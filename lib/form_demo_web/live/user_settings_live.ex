@@ -165,4 +165,9 @@ defmodule FormDemoWeb.UserSettingsLive do
         {:noreply, assign(socket, password_form: to_form(changeset))}
     end
   end
+
+  def handle_event("validate_test", params, socket) do
+    dbg params
+    {:noreply, socket}
+  end
 end

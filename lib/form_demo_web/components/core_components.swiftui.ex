@@ -125,7 +125,7 @@ defmodule FormDemoWeb.CoreComponents.SwiftUI do
 
   attr :type, :string,
     default: "TextField",
-    values: ~w(TextFieldLink DatePicker MultiDatePicker Picker SecureField Slider Stepper TextEditor TextField Toggle)
+    values: ~w(TextFieldLink DatePicker MultiDatePicker Picker SecureField Slider Stepper TextEditor TextField Toggle hidden)
 
   attr :field, Phoenix.HTML.FormField,
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
@@ -143,8 +143,12 @@ defmodule FormDemoWeb.CoreComponents.SwiftUI do
 
   attr :readonly, :boolean, default: false
 
+  attr :autocomplete, :string,
+    default: "on",
+    values: ~w(on off)
+
   attr :rest, :global,
-    include: ~w(accept autocomplete capture cols disabled form list maxlength minlength
+    include: ~w(accept capture cols disabled form list maxlength minlength
                 multiple pattern required rows size step)
 
   slot :inner_block
@@ -157,9 +161,19 @@ defmodule FormDemoWeb.CoreComponents.SwiftUI do
     |> assign_new(:value, fn -> field.value end)
     |> assign(
       :rest,
-      Map.put(assigns.rest, :class, ~s(#{Map.get(assigns.rest, :class, "")} #{if assigns.readonly or Map.get(assigns.rest, :disabled, false), do: "disabled-true", else: ""}))
+      Map.put(assigns.rest, :class, [
+        Map.get(assigns.rest, :class, ""),
+        (if assigns.readonly or Map.get(assigns.rest, :disabled, false), do: "disabled-true", else: ""),
+        (if assigns.autocomplete == "off", do: "text-input-autocapitalization-never autocorrection-disabled", else: "")
+      ] |> Enum.join(" "))
     )
     |> input()
+  end
+
+  def input(%{type: "hidden"} = assigns) do
+    ~LVN"""
+    <LiveHiddenField id={@id} name={@name} value={@value} {@rest} />
+    """
   end
 
   def input(%{type: "TextFieldLink"} = assigns) do
@@ -179,12 +193,9 @@ defmodule FormDemoWeb.CoreComponents.SwiftUI do
   def input(%{type: "DatePicker"} = assigns) do
     ~LVN"""
     <VStack alignment="leading">
-      <LabeledContent>
-        <Text template="label"><%= @label %></Text>
-        <DatePicker id={@id} name={@name} selection={@value} {@rest}>
-          <%= @label %>
-        </DatePicker>
-      </LabeledContent>
+      <DatePicker id={@id} name={@name} selection={@value} {@rest}>
+        <%= @label %>
+      </DatePicker>
       <.error :for={msg <- @errors}><%= msg %></.error>
     </VStack>
     """
@@ -205,17 +216,15 @@ defmodule FormDemoWeb.CoreComponents.SwiftUI do
   def input(%{type: "Picker"} = assigns) do
     ~LVN"""
     <VStack alignment="leading">
-      <LabeledContent>
+      <Picker id={@id} name={@name} selection={@value} {@rest}>
         <Text template="label"><%= @label %></Text>
-        <Picker id={@id} name={@name} selection={@value} {@rest}>
-          <Text
-            :for={{name, value} <- @options}
-            tag={value}
-          >
-            <%= name %>
-          </Text>
-        </Picker>
-      </LabeledContent>
+        <Text
+          :for={{name, value} <- @options}
+          tag={value}
+        >
+          <%= name %>
+        </Text>
+      </Picker>
       <.error :for={msg <- @errors}><%= msg %></.error>
     </VStack>
     """
@@ -250,7 +259,7 @@ defmodule FormDemoWeb.CoreComponents.SwiftUI do
     <VStack alignment="leading">
       <LabeledContent>
         <Text template="label"><%= @label %></Text>
-        <TextEditor id={@id} name={@name} text={@value} {@rest}><%= @placeholder || @label %></TextEditor>
+        <TextEditor id={@id} name={@name} text={@value} {@rest} />
       </LabeledContent>
       <.error :for={msg <- @errors}><%= msg %></.error>
     </VStack>
@@ -280,7 +289,7 @@ defmodule FormDemoWeb.CoreComponents.SwiftUI do
     <VStack alignment="leading">
       <LabeledContent>
         <Text template="label"><%= @label %></Text>
-        <Toggle id={@id} name={@name} isOn={@value} {@rest}></Toggle>
+        <Toggle id={@id} name={@name} isOn={Map.get(assigns, :checked, Map.get(assigns, :value))} {@rest}></Toggle>
       </LabeledContent>
       <.error :for={msg <- @errors}><%= msg %></.error>
     </VStack>
@@ -312,9 +321,9 @@ defmodule FormDemoWeb.CoreComponents.SwiftUI do
       <Text :if={@subtitle != []} template="subtitle">
         <%= render_slot(@subtitle) %>
       </Text>
-      <ToolbarItem template="toolbar">
+      <ToolbarItemGroup template="toolbar">
         <%= render_slot(@actions) %>
-      </ToolbarItem>
+      </ToolbarItemGroup>
     </VStack>
     """
   end

@@ -24,7 +24,6 @@ defmodule FormDemoWeb.UserSessionController do
     if user = Accounts.get_user_by_email_and_password(email, password) do
       conn
       |> put_flash(:info, info)
-      |> put_session(:user_return_to, ~p"/users/settings") # we need to redirect the user back to a live view after logging in.
       |> UserAuth.log_in_user(user, user_params)
     else
       # In order to prevent user enumeration attacks, don't disclose whether the email is registered.

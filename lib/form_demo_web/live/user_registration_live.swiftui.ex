@@ -27,7 +27,7 @@ defmodule FormDemoWeb.UserRegistrationLive.SwiftUI do
         Oops, something went wrong! Please check the errors below.
       </.error>
 
-      <.input field={@form[:email]} type="TextField" label="Email" required class="keyboard-type-emailAddress text-input-autocapitalization-never autocorrection-disabled" />
+      <.input field={@form[:email]} type="TextField" label="Email" required class="keyboard-type-emailAddress" autocomplete="off" />
       <.input field={@form[:password]} type="SecureField" label="Password" required />
 
       <:actions>
