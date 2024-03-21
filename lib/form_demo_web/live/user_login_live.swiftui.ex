@@ -32,11 +32,7 @@ defmodule FormDemoWeb.UserLoginLive.SwiftUI do
 
       <:actions>
         <.button type="submit">
-          <HStack>
-            <Text>Sign in</Text>
-            <Spacer />
-            <Image systemName="arrow.right" />
-          </HStack>
+          <Text>Sign in<Text verbatim=" " /><Image systemName="arrow.right" /></Text>
         </.button>
       </:actions>
     </.simple_form>

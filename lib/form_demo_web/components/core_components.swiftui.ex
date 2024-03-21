@@ -360,9 +360,14 @@ defmodule FormDemoWeb.CoreComponents.SwiftUI do
   slot :inner_block, required: true
   def button(%{ type: "submit" } = assigns) do
     ~LVN"""
-    <LiveSubmitButton>
-      <%= render_slot(@inner_block) %>
-    </LiveSubmitButton>
+    <Section>
+      <LiveSubmitButton class="button-style-borderedProminent control-size-large list-row-insets-EdgeInsets() list-row-background-:background">
+        <Group class="max-w-infinity bold">
+          <%= render_slot(@inner_block) %>
+        </Group>
+        <Rectangle template="background" class="fg-tint" />
+      </LiveSubmitButton>
+    </Section>
     """
   end
   def button(assigns) do

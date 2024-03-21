@@ -36,17 +36,17 @@ defmodule FormDemoWeb.UserSettingsLive.SwiftUI do
           <.button type="submit">Change Email</.button>
         </Section>
       </.form>
-      <Section>
-        <Text template="header">Change Password</Text>
-        <.form
-          for={@password_form}
-          id="password_form"
-          action={~p"/users/log_in?_action=password_updated"}
-          method="post"
-          phx-change="validate_password"
-          phx-submit="update_password"
-          phx-trigger-action={@trigger_submit}
-        >
+      <.form
+        for={@password_form}
+        id="password_form"
+        action={~p"/users/log_in?_action=password_updated"}
+        method="post"
+        phx-change="validate_password"
+        phx-submit="update_password"
+        phx-trigger-action={@trigger_submit}
+      >
+        <Section>
+          <Text template="header">Change Password</Text>
           <.input
             field={@password_form[:email]}
             type="hidden"
@@ -69,23 +69,12 @@ defmodule FormDemoWeb.UserSettingsLive.SwiftUI do
             value={@current_password}
             required
           />
+        </Section>
+
+        <Section>
           <.button type="submit">Change Password</.button>
-        </.form>
-      </Section>
-      <Section>
-        <.form for={%{id: "test"}} phx-change="validate_test">
-          <.input name="1" value="" label="Default text field" />
-          <.input name="2" value={DateTime.utc_now()} label="Start Date" type="DatePicker" />
-          <.input name="3" value={""} label="Multiple Dates" type="MultiDatePicker" />
-          <.input name="4" value={"2"} label="Pick a Value" type="Picker" options={[{"a", "1"}, {"b", "2"}, {"c", "3"}]} />
-          <.input name="5" value={1} label="Range" type="Slider" min={0} max={20} step={1} />
-          <.input name="6" value={1} label="Stepped" type="Stepper" step={3} />
-          <.input name="7" value={"Multi\nline\nediting"} label="Editor" type="TextEditor" />
-          <.input name="8" value={""} label="Explicit text field" type="TextField" />
-          <.input name="9" value={""} label="Private text field" type="SecureField" />
-          <.input name="10" value={true} label="Turn on/off" type="Toggle" />
-        </.form>
-      </Section>
+        </Section>
+      </.form>
     </Form>
     """
   end
