@@ -1,6 +1,5 @@
 defmodule FormDemoWeb.UserConfirmationLive do
   use FormDemoWeb, :live_view
-  use FormDemoNative, :live_view
 
   alias FormDemo.Accounts
 

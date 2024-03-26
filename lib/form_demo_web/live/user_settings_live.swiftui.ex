@@ -3,8 +3,6 @@ defmodule FormDemoWeb.UserSettingsLive.SwiftUI do
 
   import FormDemoWeb.CoreComponents.SwiftUI
 
-  alias FormDemo.Accounts
-
   def render(assigns) do
     ~LVN"""
     <.header>
@@ -36,6 +34,9 @@ defmodule FormDemoWeb.UserSettingsLive.SwiftUI do
           <.button type="submit">Change Email</.button>
         </Section>
       </.form>
+
+      <Divider class="list-row-background-:empty" />
+
       <.form
         for={@password_form}
         id="password_form"
