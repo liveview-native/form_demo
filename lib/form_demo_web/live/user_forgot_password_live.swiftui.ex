@@ -14,7 +14,7 @@ defmodule FormDemoWeb.UserForgotPasswordLive.SwiftUI do
     </.header>
 
     <.simple_form for={@form} id="reset_password_form" phx-submit="send_email">
-      <.input field={@form[:email]} type="TextField" placeholder="Email" required />
+      <.input field={@form[:email]} type="TextField" placeholder="Email" />
       <:actions>
         <.button type="submit">
           Send password reset instructions

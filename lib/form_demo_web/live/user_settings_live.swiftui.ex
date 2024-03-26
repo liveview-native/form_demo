@@ -19,7 +19,7 @@ defmodule FormDemoWeb.UserSettingsLive.SwiftUI do
       >
         <Section>
           <Text template="header">Change Email</Text>
-          <.input field={@email_form[:email]} type="TextField" label="Email" required />
+          <.input field={@email_form[:email]} type="TextField" label="Email" />
           <.input
             field={@email_form[:current_password]}
             name="current_password"
@@ -27,7 +27,6 @@ defmodule FormDemoWeb.UserSettingsLive.SwiftUI do
             type="SecureField"
             label="Current password"
             value={@email_form_current_password}
-            required
           />
         </Section>
         <Section>
@@ -55,7 +54,7 @@ defmodule FormDemoWeb.UserSettingsLive.SwiftUI do
             value={@current_email}
             readonly
           />
-          <.input field={@password_form[:password]} type="SecureField" label="New password" required />
+          <.input field={@password_form[:password]} type="SecureField" label="New password" />
           <.input
             field={@password_form[:password_confirmation]}
             type="SecureField"
@@ -68,7 +67,6 @@ defmodule FormDemoWeb.UserSettingsLive.SwiftUI do
             label="Current password"
             id="current_password_for_password"
             value={@current_password}
-            required
           />
         </Section>
 

@@ -16,8 +16,8 @@ defmodule FormDemoWeb.UserLoginLive.SwiftUI do
 
     <.simple_form for={@form} id="login_form" action={~p"/users/log_in"} phx-update="ignore">
       <Section>
-        <.input field={@form[:email]} type="TextField" label="Email" required />
-        <.input field={@form[:password]} type="SecureField" label="Password" required />
+        <.input field={@form[:email]} type="TextField" label="Email" />
+        <.input field={@form[:password]} type="SecureField" label="Password" />
 
         <Group template="footer">
           <.link navigate={~p"/users/reset_password"} class="font-caption font-weight-semibold">

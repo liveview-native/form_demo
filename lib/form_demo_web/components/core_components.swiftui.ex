@@ -148,8 +148,7 @@ defmodule FormDemoWeb.CoreComponents.SwiftUI do
     values: ~w(on off)
 
   attr :rest, :global,
-    include: ~w(accept capture cols disabled form list maxlength minlength
-                multiple pattern required rows size step)
+    include: ~w(disabled step)
 
   slot :inner_block
 
