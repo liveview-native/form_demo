@@ -391,6 +391,69 @@ defmodule FormDemoWeb.CoreComponents.SwiftUI do
     """
   end
 
+  attr :url, :string, required: true
+  attr :rest, :global
+  slot :empty
+  slot :success do
+    attr :class, :string
+  end
+  slot :failure do
+    attr :class, :string
+  end
+
+  def image(assigns) do
+    ~LVN"""
+    <AsyncImage url={@url} {@rest}>
+      <Group template="phase.empty">
+        <ProgressView :if={@empty == []} />
+        <%= render_slot(@empty) %>
+      </Group>
+      <Group template="phase.success">
+        <.image_success slot={@success} />
+      </Group>
+      <Group template="phase.failure">
+        <.image_failure slot={@failure} />
+      </Group>
+    </AsyncImage>
+    """
+  end
+
+  defp image_success(%{ slot: [] } = assigns) do
+    ~LVN"""
+    <AsyncImage image />
+    """
+  end
+
+  defp image_success(%{ slot: [%{ inner_block: nil }] } = assigns) do
+    ~LVN"""
+    <AsyncImage image :for={slot <- @slot} class={slot.class} />
+    """
+  end
+
+  defp image_success(assigns) do
+    ~LVN"""
+    <%= render_slot(@slot) %>
+    """
+  end
+
+  defp image_failure(%{ slot: [] } = assigns) do
+    ~LVN"""
+    <AsyncImage error />
+    """
+  end
+
+  defp image_failure(%{ slot: [%{ inner_block: nil }] } = assigns) do
+    ~LVN"""
+    <AsyncImage error :for={slot <- @slot} class={slot.class} />
+    """
+  end
+
+  defp image_failure(assigns) do
+    ~LVN"""
+    <%= render_slot(@slot) %>
+    """
+  end
+
   @doc """
   Translates an error message using gettext.
   """

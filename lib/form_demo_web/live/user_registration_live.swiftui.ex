@@ -31,7 +31,15 @@ defmodule FormDemoWeb.UserRegistrationLive.SwiftUI do
       <.input field={@form[:password]} type="SecureField" label="Password" />
 
       <:actions>
-        <.button type="submit">Create an account</.button>
+        <.button type="submit">
+          <Label>
+            <Text template="title">Create an account</Text>
+            <.image url={~p"/images/logo.png"} template="icon">
+              <:success class="rendering-mode-template resizable scaled-to-fit w-30 h-30 fg-white" />
+              <:failure></:failure>
+            </.image>
+          </Label>
+        </.button>
       </:actions>
     </.simple_form>
     """
