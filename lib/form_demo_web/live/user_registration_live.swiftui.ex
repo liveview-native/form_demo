@@ -35,6 +35,7 @@ defmodule FormDemoWeb.UserRegistrationLive.SwiftUI do
           <Label>
             <Text template="title">Create an account</Text>
             <.image url={~p"/images/logo.png"} template="icon">
+              <:empty></:empty>
               <:success class="rendering-mode-template resizable scaled-to-fit fg-white" />
               <:failure></:failure>
             </.image>

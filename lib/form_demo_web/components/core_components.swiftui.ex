@@ -404,53 +404,40 @@ defmodule FormDemoWeb.CoreComponents.SwiftUI do
   def image(assigns) do
     ~LVN"""
     <AsyncImage url={@url} {@rest}>
-      <Group template="phase.empty">
-        <ProgressView :if={@empty == []} />
+      <Group template="phase.empty" :if={@empty != []}>
         <%= render_slot(@empty) %>
       </Group>
-      <Group template="phase.success">
-        <.image_success slot={@success} />
-      </Group>
-      <Group template="phase.failure">
-        <.image_failure slot={@failure} />
-      </Group>
+      <.image_success slot={@success} />
+      <.image_failure slot={@failure} />
     </AsyncImage>
-    """
-  end
-
-  defp image_success(%{ slot: [] } = assigns) do
-    ~LVN"""
-    <AsyncImage image />
     """
   end
 
   defp image_success(%{ slot: [%{ inner_block: nil }] } = assigns) do
     ~LVN"""
-    <AsyncImage image :for={slot <- @slot} class={slot.class} />
+    <AsyncImage image template="phase.success" :for={slot <- @slot} class={slot.class} />
     """
   end
 
   defp image_success(assigns) do
     ~LVN"""
-    <%= render_slot(@slot) %>
-    """
-  end
-
-  defp image_failure(%{ slot: [] } = assigns) do
-    ~LVN"""
-    <AsyncImage error />
+    <Group template="phase.success" :if={@slot != []}>
+      <%= render_slot(@slot) %>
+    </Group>
     """
   end
 
   defp image_failure(%{ slot: [%{ inner_block: nil }] } = assigns) do
     ~LVN"""
-    <AsyncImage error :for={slot <- @slot} class={slot.class} />
+    <AsyncImage error template="phase.failure" :for={slot <- @slot} class={slot.class} />
     """
   end
 
   defp image_failure(assigns) do
     ~LVN"""
-    <%= render_slot(@slot) %>
+    <Group template="phase.failure" :if={@slot != []}>
+      <%= render_slot(@slot) %>
+    </Group>
     """
   end
 
