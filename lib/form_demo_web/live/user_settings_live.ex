@@ -1,5 +1,6 @@
 defmodule FormDemoWeb.UserSettingsLive do
   use FormDemoWeb, :live_view
+  use FormDemoNative, :live_view
 
   alias FormDemo.Accounts
 
@@ -163,5 +164,10 @@ defmodule FormDemoWeb.UserSettingsLive do
       {:error, changeset} ->
         {:noreply, assign(socket, password_form: to_form(changeset))}
     end
+  end
+
+  def handle_event("validate_test", params, socket) do
+    dbg params
+    {:noreply, socket}
   end
 end

@@ -99,6 +99,8 @@ defmodule FormDemoWeb.CoreComponents.SwiftUI do
         {true, attrs} -> Keyword.put(attrs, :enctype, "multipart/form-data")
       end
 
+    attrs = Keyword.put(attrs, :id, Map.get(assigns.rest, :id, form_for.id))
+
     assigns =
       assign(assigns,
         form: form,
@@ -122,9 +124,8 @@ defmodule FormDemoWeb.CoreComponents.SwiftUI do
   attr :value, :any
 
   attr :type, :string,
-    default: "text",
-    values: ~w(checkbox color date datetime-local email file hidden month number password
-               range radio search select tel text textarea time url week)
+    default: "TextField",
+    values: ~w(TextFieldLink DatePicker MultiDatePicker Picker SecureField Slider Stepper TextEditor TextField Toggle hidden)
 
   attr :field, Phoenix.HTML.FormField,
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
@@ -135,9 +136,19 @@ defmodule FormDemoWeb.CoreComponents.SwiftUI do
   attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
   attr :multiple, :boolean, default: false, doc: "the multiple flag for select inputs"
 
+  attr :min, :any, default: nil
+  attr :max, :any, default: nil
+
+  attr :placeholder, :string, default: nil
+
+  attr :readonly, :boolean, default: false
+
+  attr :autocomplete, :string,
+    default: "on",
+    values: ~w(on off)
+
   attr :rest, :global,
-    include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
-                multiple pattern placeholder readonly required rows size step)
+    include: ~w(disabled step)
 
   slot :inner_block
 
@@ -147,66 +158,197 @@ defmodule FormDemoWeb.CoreComponents.SwiftUI do
     |> assign(:errors, Enum.map(field.errors, &translate_error(&1)))
     |> assign_new(:name, fn -> if assigns.multiple, do: field.name <> "[]", else: field.name end)
     |> assign_new(:value, fn -> field.value end)
+    |> assign(
+      :rest,
+      Map.put(assigns.rest, :class, [
+        Map.get(assigns.rest, :class, ""),
+        (if assigns.readonly or Map.get(assigns.rest, :disabled, false), do: "disabled-true", else: ""),
+        (if assigns.autocomplete == "off", do: "text-input-autocapitalization-never autocorrection-disabled", else: "")
+      ] |> Enum.join(" "))
+    )
     |> input()
   end
 
-  def input(%{type: "ColorPicker"} = assigns) do
+  def input(%{type: "hidden"} = assigns) do
     ~LVN"""
-      <ColorPicker></ColorPicker>
+    <LiveHiddenField id={@id} name={@name} value={@value} {@rest} />
+    """
+  end
+
+  def input(%{type: "TextFieldLink"} = assigns) do
+    ~LVN"""
+    <VStack alignment="leading">
+      <LabeledContent>
+        <Text template="label"><%= @label %></Text>
+        <TextFieldLink id={@id} name={@name} value={@value} prompt={@prompt} {@rest}>
+          <%= @label %>
+        </TextFieldLink>
+      </LabeledContent>
+      <.error :for={msg <- @errors}><%= msg %></.error>
+    </VStack>
     """
   end
 
   def input(%{type: "DatePicker"} = assigns) do
     ~LVN"""
-      <DatePicker></DatePicker>
+    <VStack alignment="leading">
+      <DatePicker id={@id} name={@name} selection={@value} {@rest}>
+        <%= @label %>
+      </DatePicker>
+      <.error :for={msg <- @errors}><%= msg %></.error>
+    </VStack>
     """
   end
 
   def input(%{type: "MultiDatePicker"} = assigns) do
     ~LVN"""
-      <MultiDatePicker></MultiDatePicker>
+    <VStack alignment="leading">
+      <LabeledContent>
+        <Text template="label"><%= @label %></Text>
+        <MultiDatePicker id={@id} name={@name} selection={@value} {@rest}><%= @label %></MultiDatePicker>
+      </LabeledContent>
+      <.error :for={msg <- @errors}><%= msg %></.error>
+    </VStack>
     """
   end
 
   def input(%{type: "Picker"} = assigns) do
     ~LVN"""
-    <Picker></Picker>
-    """
-  end
-
-  def input(%{type: "SecureField"} = assigns) do
-    ~LVN"""
-    <SecureField></SecureField>
+    <VStack alignment="leading">
+      <Picker id={@id} name={@name} selection={@value} {@rest}>
+        <Text template="label"><%= @label %></Text>
+        <Text
+          :for={{name, value} <- @options}
+          tag={value}
+        >
+          <%= name %>
+        </Text>
+      </Picker>
+      <.error :for={msg <- @errors}><%= msg %></.error>
+    </VStack>
     """
   end
 
   def input(%{type: "Slider"} = assigns) do
     ~LVN"""
-    <Slider></Slider>
+    <VStack alignment="leading">
+      <LabeledContent>
+        <Text template="label"><%= @label %></Text>
+        <Slider id={@id} name={@name} value={@value} lowerBound={@min} upperBound={@max} {@rest}><%= @label %></Slider>
+      </LabeledContent>
+      <.error :for={msg <- @errors}><%= msg %></.error>
+    </VStack>
     """
   end
 
   def input(%{type: "Stepper"} = assigns) do
     ~LVN"""
-    <Stepper></Stepper>
+    <VStack alignment="leading">
+      <LabeledContent>
+        <Text template="label"><%= @label %></Text>
+        <Stepper id={@id} name={@name} value={@value} {@rest}></Stepper>
+      </LabeledContent>
+      <.error :for={msg <- @errors}><%= msg %></.error>
+    </VStack>
     """
   end
 
   def input(%{type: "TextEditor"} = assigns) do
     ~LVN"""
-    <TextEditor></TextEditor>
+    <VStack alignment="leading">
+      <LabeledContent>
+        <Text template="label"><%= @label %></Text>
+        <TextEditor id={@id} name={@name} text={@value} {@rest} />
+      </LabeledContent>
+      <.error :for={msg <- @errors}><%= msg %></.error>
+    </VStack>
     """
   end
 
   def input(%{type: "TextField"} = assigns) do
     ~LVN"""
-    <TextField></TextField>
+    <VStack alignment="leading">
+      <TextField id={@id} name={@name} text={@value} prompt={@prompt} {@rest}><%= @placeholder || @label %></TextField>
+      <.error :for={msg <- @errors}><%= msg %></.error>
+    </VStack>
+    """
+  end
+
+  def input(%{type: "SecureField"} = assigns) do
+    ~LVN"""
+    <VStack alignment="leading">
+      <SecureField id={@id} name={@name} text={@value} prompt={@prompt} {@rest}><%= @placeholder || @label %></SecureField>
+      <.error :for={msg <- @errors}><%= msg %></.error>
+    </VStack>
     """
   end
 
   def input(%{type: "Toggle"} = assigns) do
     ~LVN"""
-    <Toggle></Toggle>
+    <VStack alignment="leading">
+      <LabeledContent>
+        <Text template="label"><%= @label %></Text>
+        <Toggle id={@id} name={@name} isOn={Map.get(assigns, :checked, Map.get(assigns, :value))} {@rest}></Toggle>
+      </LabeledContent>
+      <.error :for={msg <- @errors}><%= msg %></.error>
+    </VStack>
+    """
+  end
+
+  slot :inner_block, required: true
+
+  def error(assigns) do
+    ~LVN"""
+    <Group class="font-caption fg-red">
+      <%= render_slot(@inner_block) %>
+    </Group>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  slot :inner_block, required: true
+  slot :subtitle
+  slot :actions
+
+  def header(assigns) do
+    ~LVN"""
+    <VStack class={"navigation-title-:title navigation-subtitle-:subtitle toolbar--toolbar #{@class}"}>
+      <Text template="title">
+        <%= render_slot(@inner_block) %>
+      </Text>
+      <Text :if={@subtitle != []} template="subtitle">
+        <%= render_slot(@subtitle) %>
+      </Text>
+      <ToolbarItemGroup template="toolbar">
+        <%= render_slot(@actions) %>
+      </ToolbarItemGroup>
+    </VStack>
+    """
+  end
+
+  attr :for, :any, required: true, doc: "the datastructure for the form"
+  attr :as, :any, default: nil, doc: "the server side parameter to collect all input under"
+
+  attr :rest, :global,
+    include: ~w(autocomplete name rel action enctype method novalidate target multipart),
+    doc: "the arbitrary HTML attributes to apply to the form tag"
+
+  slot :inner_block, required: true
+  slot :actions, doc: "the slot for form actions, such as a submit button"
+
+  def simple_form(assigns) do
+    ~LVN"""
+    <.form :let={f} for={@for} as={@as} {@rest}>
+      <Form>
+        <%= render_slot(@inner_block, f) %>
+        <Section>
+          <%= for action <- @actions do %>
+            <%= render_slot(action, f) %>
+          <% end %>
+        </Section>
+      </Form>
+    </.form>
     """
   end
 
@@ -215,15 +357,87 @@ defmodule FormDemoWeb.CoreComponents.SwiftUI do
   attr :rest, :global, include: ~w(disabled form name value)
 
   slot :inner_block, required: true
+  def button(%{ type: "submit" } = assigns) do
+    ~LVN"""
+    <Section>
+      <LiveSubmitButton class="button-style-borderedProminent control-size-large list-row-insets-EdgeInsets() list-row-background-:empty">
+        <Group class="max-w-infinity bold">
+          <%= render_slot(@inner_block) %>
+        </Group>
+      </LiveSubmitButton>
+    </Section>
+    """
+  end
   def button(assigns) do
     ~LVN"""
-    <Button></Button>
+    <Button>
+      <%= render_slot(@inner_block) %>
+    </Button>
     """
   end
 
   def table(assigns) do
     ~LVN"""
     <Table></Table>
+    """
+  end
+
+  attr :name, :string, required: true
+  attr :class, :string, default: nil
+
+  def icon(assigns) do
+    ~LVN"""
+    <Image systemName={@name} class={@class} />
+    """
+  end
+
+  attr :url, :string, required: true
+  attr :rest, :global
+  slot :empty
+  slot :success do
+    attr :class, :string
+  end
+  slot :failure do
+    attr :class, :string
+  end
+
+  def image(assigns) do
+    ~LVN"""
+    <AsyncImage url={@url} {@rest}>
+      <Group template="phase.empty" :if={@empty != []}>
+        <%= render_slot(@empty) %>
+      </Group>
+      <.image_success slot={@success} />
+      <.image_failure slot={@failure} />
+    </AsyncImage>
+    """
+  end
+
+  defp image_success(%{ slot: [%{ inner_block: nil }] } = assigns) do
+    ~LVN"""
+    <AsyncImage image template="phase.success" :for={slot <- @slot} class={slot.class} />
+    """
+  end
+
+  defp image_success(assigns) do
+    ~LVN"""
+    <Group template="phase.success" :if={@slot != []}>
+      <%= render_slot(@slot) %>
+    </Group>
+    """
+  end
+
+  defp image_failure(%{ slot: [%{ inner_block: nil }] } = assigns) do
+    ~LVN"""
+    <AsyncImage error template="phase.failure" :for={slot <- @slot} class={slot.class} />
+    """
+  end
+
+  defp image_failure(assigns) do
+    ~LVN"""
+    <Group template="phase.failure" :if={@slot != []}>
+      <%= render_slot(@slot) %>
+    </Group>
     """
   end
 
@@ -253,5 +467,105 @@ defmodule FormDemoWeb.CoreComponents.SwiftUI do
   """
   def translate_errors(errors, field) when is_list(errors) do
     for {^field, {msg, opts}} <- errors, do: translate_error({msg, opts})
+  end
+
+  @doc type: :component
+  attr(:navigate, :string,
+    doc: """
+    Navigates from a LiveView to a new LiveView.
+    The browser page is kept, but a new LiveView process is mounted and its content on the page
+    is reloaded. It is only possible to navigate between LiveViews declared under the same router
+    `Phoenix.LiveView.Router.live_session/3`. Otherwise, a full browser redirect is used.
+    """
+  )
+
+  # attr(:patch, :string,
+  #   doc: """
+  #   Patches the current LiveView.
+  #   The `handle_params` callback of the current LiveView will be invoked and the minimum content
+  #   will be sent over the wire, as any other LiveView diff.
+  #   """
+  # )
+
+  attr(:href, :any,
+    doc: """
+    Uses traditional browser navigation to the new location.
+    This means the whole page is reloaded on the browser.
+    """
+  )
+
+  # `NavigationLink` always pushes a new page.
+  # attr(:replace, :boolean,
+  #   default: false,
+  #   doc: """
+  #   When using `:patch` or `:navigate`,
+  #   should the browser's history be replaced with `pushState`?
+  #   """
+  # )
+
+  attr(:method, :string,
+    default: "get",
+    doc: """
+    The HTTP method to use with the link. This is intended for usage outside of LiveView
+    and therefore only works with the `href={...}` attribute. It has no effect on `patch`
+    and `navigate` instructions.
+
+    In case the method is not `get`, the link is generated inside the form which sets the proper
+    information. In order to submit the form, JavaScript must be enabled in the browser.
+    """
+  )
+
+  attr(:csrf_token, :any,
+    default: true,
+    doc: """
+    A boolean or custom token to use for links with an HTTP method other than `get`.
+    """
+  )
+
+  attr(:rest, :global,
+    include: ~w(download hreflang referrerpolicy rel target type),
+    doc: """
+    Additional HTML attributes added to the `a` tag.
+    """
+  )
+
+  slot(:inner_block,
+    required: true,
+    doc: """
+    The content rendered inside of the `a` tag.
+    """
+  )
+
+  def link(%{navigate: to} = assigns) when is_binary(to) do
+    ~LVN"""
+    <NavigationLink destination={@navigate} {@rest}>
+      <%= render_slot(@inner_block) %>
+    </NavigationLink>
+    """
+  end
+
+  # `patch` cannot be expressed with `NavigationLink`.
+  # Use `push_patch` within `handle_event` to patch the URL.
+  # def link(%{patch: to} = assigns) when is_binary(to) do
+  #   ~LVN""
+  # end
+
+  def link(%{href: href} = assigns) when href != "#" and not is_nil(href) do
+    href = Phoenix.LiveView.Utils.valid_destination!(href, "<.link>")
+    assigns = assign(assigns, :href, href)
+
+    ~LVN"""
+    <Link destination={@href} {@rest}>
+      <%= render_slot(@inner_block) %>
+    </Link>
+    """
+  end
+
+  def link(%{} = assigns) do
+    ~LVN"""
+    <NavigationLink destination="#" {@rest}>
+      <%= render_slot(@inner_block) %>
+    </NavigationLink>
+    """
   end
 end

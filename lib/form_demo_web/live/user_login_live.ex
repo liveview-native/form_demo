@@ -1,5 +1,6 @@
 defmodule FormDemoWeb.UserLoginLive do
   use FormDemoWeb, :live_view
+  use FormDemoNative, :live_view
 
   def render(assigns) do
     ~H"""
