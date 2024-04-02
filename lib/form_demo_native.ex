@@ -4,8 +4,11 @@ defmodule FormDemoNative do
   def live_view() do
     quote do
       use LiveViewNative.LiveView,
-        formats: [:swiftui],
-        layouts: [swiftui: {FormDemoWeb.Layouts.SwiftUI, :app}]
+        formats: [:jetpack, :swiftui],
+        layouts: [
+          jetpack: {FormDemoWeb.Layouts.Jetpack, :app},
+          swiftui: {FormDemoWeb.Layouts.SwiftUI, :app}
+        ]
 
       unquote(verified_routes())
     end

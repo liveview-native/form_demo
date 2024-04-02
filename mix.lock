@@ -23,6 +23,7 @@
   "hpax": {:hex, :hpax, "0.1.2", "09a75600d9d8bbd064cdd741f21fc06fc1f4cf3d0fcc335e5aa19be1a7235c84", [:mix], [], "hexpm", "2c87843d5a23f5f16748ebe77969880e29809580efdaccd615cd3bed628a8c13"},
   "jason": {:hex, :jason, "1.4.1", "af1504e35f629ddcdd6addb3513c3853991f694921b1b9368b0bd32beb9f1b63", [:mix], [{:decimal, "~> 1.0 or ~> 2.0", [hex: :decimal, repo: "hexpm", optional: true]}], "hexpm", "fbb01ecdfd565b56261302f7e1fcc27c4fb8f32d56eab74db621fc154604a7a1"},
   "live_view_native": {:git, "https://github.com/liveview-native/live_view_native.git", "3c38123a9e6d8b9b682fb3b4c46833801118a060", [branch: "main"]},
+  "live_view_native_jetpack": {:git, "https://github.com/liveview-native/liveview-client-jetpack.git", "7b7bb9b8041e4e60fd5847e344ab1817e97b7b2f", [branch: "main"]},
   "live_view_native_stylesheet": {:git, "https://github.com/liveview-native/live_view_native_stylesheet.git", "54cf279fe79745cf6bee9c2bf34771a0ef97c637", [branch: "main"]},
   "live_view_native_swiftui": {:git, "https://github.com/liveview-native/liveview-client-swiftui.git", "feb32a930b468ec32731c28f23acd06c0e097e82", [branch: "main"]},
   "live_view_native_utility_classes": {:git, "https://github.com/liveview-native/live_view_native_utility_classes.git", "b8af43a0c46930aecdc348ec6d2f7648f3528bdc", [branch: "main"]},

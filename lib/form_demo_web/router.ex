@@ -4,12 +4,13 @@ defmodule FormDemoWeb.Router do
   import FormDemoWeb.UserAuth
 
   pipeline :browser do
-    plug :accepts, ["html", "swiftui"]
+    plug :accepts, ["html", "swiftui", "jetpack"]
     plug :fetch_session
     plug :fetch_live_flash
     plug :put_root_layout,
       html: {FormDemoWeb.Layouts, :root},
-      swiftui: {FormDemoWeb.Layouts.SwiftUI, :root}
+      swiftui: {FormDemoWeb.Layouts.SwiftUI, :root},
+      jetpack: {FormDemoWeb.Layouts.Jetpack, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_user

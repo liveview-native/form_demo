@@ -59,9 +59,11 @@ defmodule FormDemo.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.2"},
-      {:live_view_native, github: "liveview-native/live_view_native", branch: "main"},
+      # {:live_view_native, github: "liveview-native/live_view_native", branch: "main", override: true},
+      {:live_view_native, path: "../../live_view_native", override: true},
       {:live_view_native_stylesheet, github: "liveview-native/live_view_native_stylesheet", branch: "main", override: true},
       {:live_view_native_swiftui, github: "liveview-native/liveview-client-swiftui", branch: "main"},
+      {:live_view_native_jetpack, github: "liveview-native/liveview-client-jetpack", branch: "main"},
       {:live_view_native_utility_classes, github: "liveview-native/live_view_native_utility_classes", branch: "main"}
     ]
   end
