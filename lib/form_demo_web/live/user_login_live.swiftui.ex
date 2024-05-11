@@ -1,8 +1,6 @@
 defmodule FormDemoWeb.UserLoginLive.SwiftUI do
   use FormDemoNative, [:render_component, format: :swiftui]
 
-  import FormDemoWeb.CoreComponents.SwiftUI
-
   def render(assigns, _) do
     ~LVN"""
     <.header class="text-center">
@@ -16,7 +14,7 @@ defmodule FormDemoWeb.UserLoginLive.SwiftUI do
 
     <.simple_form for={@form} id="login_form" action={~p"/users/log_in"} phx-update="ignore">
       <Section>
-        <.input field={@form[:email]} type="TextField" label="Email" />
+        <.input class="keyboardType(.emailAddress)" field={@form[:email]} type="TextField" label="Email" />
         <.input field={@form[:password]} type="SecureField" label="Password" />
 
         <Group template="footer">

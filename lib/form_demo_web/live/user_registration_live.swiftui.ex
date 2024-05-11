@@ -1,8 +1,6 @@
 defmodule FormDemoWeb.UserRegistrationLive.SwiftUI do
   use FormDemoNative, [:render_component, format: :swiftui]
 
-  import FormDemoWeb.CoreComponents.SwiftUI
-
   def render(assigns, _) do
     ~LVN"""
     <.header class="multiline-text-alignment-center">
@@ -27,7 +25,7 @@ defmodule FormDemoWeb.UserRegistrationLive.SwiftUI do
         Oops, something went wrong! Please check the errors below.
       </.error>
 
-      <.input field={@form[:email]} type="TextField" label="Email" class="keyboard-type-emailAddress" autocomplete="off" />
+      <.input field={@form[:email]} type="TextField" label="Email" class="keyboardType(.emailAddress)" autocomplete="off" />
       <.input field={@form[:password]} type="SecureField" label="Password" />
 
       <:actions>

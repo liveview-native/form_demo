@@ -58,7 +58,7 @@ config :form_demo, FormDemoWeb.Endpoint,
     patterns: [
       ~r"priv/static/(?!uploads/).*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/form_demo_web/(controllers|live|components)/.*(ex|heex)$"
+      ~r"lib/form_demo_web/(controllers|live|components|styles)/.*(ex|heex|neex)$"
     ]
   ]
 
@@ -80,3 +80,7 @@ config :phoenix_live_view, :debug_heex_annotations, false
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
+
+config :live_view_native_stylesheet,
+  annotations: true,
+  pretty: true
