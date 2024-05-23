@@ -39,8 +39,8 @@ defmodule FormDemoWeb do
   def controller do
     quote do
       use Phoenix.Controller,
-        formats: [:html, :json, :swiftui],
-        layouts: [html: FormDemoWeb.Layouts, swiftui: FormDemoWeb.Layouts.SwiftUI]
+        formats: [:html, :json],
+        layouts: [html: FormDemoWeb.Layouts]
 
       import Plug.Conn
       import FormDemoWeb.Gettext

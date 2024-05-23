@@ -63,10 +63,12 @@ config :phoenix, :json_library, Jason
 
 config :live_view_native, plugins: [
   LiveViewNative.SwiftUI,
+  LiveViewNative.Jetpack,
 ]
 
 config :mime, :types, %{
   "text/swiftui" => ["swiftui"],
+  "text/jetpack" => ["jetpack"],
   "text/styles" => ["styles"]
 }
 
@@ -77,6 +79,9 @@ config :live_view_native_stylesheet,
     swiftui: [
       "lib/**/*swiftui*"
     ],
+    jetpack: [
+      "lib/**/*jetpack*"
+    ]
   ],
   output: "priv/static/assets"
 
@@ -84,6 +89,7 @@ config :live_view_native_stylesheet,
 # to encode for the swiftui format
 config :phoenix_template, :format_encoders, [
   swiftui: Phoenix.HTML.Engine,
+  jetpack: Phoenix.HTML.Engine
 ]
 
 # LVN - Required, you must configure Phoenix so it knows
