@@ -6,6 +6,22 @@ defmodule FormDemoWeb.Styles.App.Jetpack do
   # Refer to your client's documentation on what the proper syntax
   # is for defining rules within classes
   ~SHEET"""
+  "box-style" do
+    background(Color(255, 255, 0, 255))
+    clickable(enabled: true, onClickLabel: "string", role: Role.Button, onClick: event("my-click-event"))
+  end
+
+  "box-style2" do
+    progressSemantics(1.0, 1...100, 5)
+    align(Alignment.BottomEnd)
+    padding(Dp(20))
+  end
+
+  "box-size" do
+    background(Color.Red)
+    animateContentSize(finishedListener: event("onAnimationFinished"))
+  end
+
   """
 
   # If you need to have greater control over how your style rules are created

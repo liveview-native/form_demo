@@ -38,6 +38,8 @@ defmodule FormDemoWeb.UserRegistrationLive do
         <:actions>
           <.button phx-disable-with="Creating account..." class="w-full">Create an account</.button>
         </:actions>
+
+        <button phx-click="navigateToSettings">Ok</button>
       </.simple_form>
     </div>
     """
@@ -49,6 +51,8 @@ defmodule FormDemoWeb.UserRegistrationLive do
     socket =
       socket
       |> assign(trigger_submit: false, check_errors: false)
+      |> assign(:isVisible, "true")
+      |> assign(:isExpanded, "true")
       |> assign_form(changeset)
 
     {:ok, socket, temporary_assigns: [form: nil]}
@@ -74,6 +78,25 @@ defmodule FormDemoWeb.UserRegistrationLive do
   def handle_event("validate", %{"user" => user_params}, socket) do
     changeset = Accounts.change_user_registration(%User{}, user_params)
     {:noreply, assign_form(socket, Map.put(changeset, :action, :validate))}
+  end
+
+  def handle_event("navigateToLogin", _params, socket) do
+    {:noreply, push_navigate(socket, to: "/users/log_in")}
+  end
+
+  def handle_event("toggleVisibility", param, socket) do
+    {:noreply, assign(socket, :isVisible, param)}
+  end
+
+  def handle_event("buttonSize", param, socket) do
+    newSize = if socket.assigns.isExpanded == "true" do "false" else "true" end
+    {:noreply, assign(socket, :isExpanded, newSize)}
+  end
+
+  def handle_event("onAnimationFinished", param, socket) do
+    IO.puts "onAnimationFinished"
+    IO.inspect param
+    {:noreply, socket}
   end
 
   defp assign_form(socket, %Ecto.Changeset{} = changeset) do
