@@ -35,10 +35,12 @@ defmodule FormDemoNative do
     quote do
       use LiveViewNative.LiveView,
         formats: [
-          :swiftui
+          :swiftui,
+          :jetpack
         ],
         layouts: [
-          swiftui: {FormDemoWeb.Layouts.SwiftUI, :app}
+          swiftui: {FormDemoWeb.Layouts.SwiftUI, :app},
+          jetpack: {FormDemoWeb.Layouts.Jetpack, :app}
         ]
 
       unquote(verified_routes())
