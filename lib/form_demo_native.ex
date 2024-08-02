@@ -104,7 +104,7 @@ defmodule FormDemoNative do
       defmodule MyAppWeb.Layouts.SwiftUI do
         use MyAppNative, [:layout, format: :swiftui]
 
-        embed_tempaltes "layouts_swiftui/*"
+        embed_templates "layouts_swiftui/*"
       end
   '''
   def layout(opts) do
