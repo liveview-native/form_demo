@@ -1,26 +1,43 @@
 defmodule FormDemoWeb.UserRegistrationLive.Jetpack do
   use FormDemoNative, [:render_component, format: :jetpack]
 
-  def render(assigns, _) do
+  def render(assigns, params) do
     ~LVN"""
-    <Column verticalArrangement="Center" class="box-style" size="fill">
-      <AnimatedVisibility visible={"#{@isVisible}"} enter="[{'expandHorizontally': {}}]">
-        <AsyncImage
-          url="/images/logo.svg"
-          contentScale="fillWidth">
-          <Text template="error">Error loading image</Text>
-          <CircularProgressIndicator template="loading"/>
-        </AsyncImage>
-      </AnimatedVisibility>
-      <Button phx-click="toggleVisibility" phx-value={"#{if @isVisible == "true" do "false" else "true" end}"}><Text>Toggle Visibility</Text></Button>
-      <Text class="box-style2" color="primary">Jetpack Compose!!!</Text>
-      <Box class="box-size">
-        <%= if @isExpanded == "true" do %>
-        <Box size="100" background="system-red" />
-        <% end %>
-      </Box>
-      <Button phx-click="buttonSize"><Text>Box Size</Text></Button>
-      <Button phx-click="navigateToLogin"><Text>Login</Text></Button>
+    <Column>
+    <.header class="multiline-text-alignment-center">
+      Register
+      <:actions>
+        <Link navigate={~p"/users/log_in"}>
+          <Text class="bodyMedium">Sign in</Text>
+        </Link>
+      </:actions>
+    </.header>
+
+    <.simple_form
+      for={@form}
+      id="registration_form"
+      phx-submit="save"
+      phx-change="validate"
+      phx-trigger-action={@trigger_submit}
+      action={~p"/users/log_in?_action=registered"}
+      method="post"
+    >
+      <.error :if={@check_errors}>
+        Oops, something went wrong! Please check the errors below.
+      </.error>
+
+      <.input field={@form[:email]} type="TextField" label="Email" keyboardType="EmailAddress" autoCorrectEnabled="false" />
+      <.input field={@form[:password]} type="SecureField" label="Password" />
+
+      <:actions>
+        <.button type="submit">
+          <Row verticalAlignment="CenterVertically">
+            <Text template="title">Create an account</Text>
+            <.image url={~p"/images/logo.png"} template="icon" />
+          </Row>
+        </.button>
+      </:actions>
+    </.simple_form>
     </Column>
     """
   end

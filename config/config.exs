@@ -62,25 +62,25 @@ config :logger, :console,
 config :phoenix, :json_library, Jason
 
 config :live_view_native, plugins: [
-  LiveViewNative.SwiftUI,
   LiveViewNative.Jetpack,
+  LiveViewNative.SwiftUI
 ]
 
 config :mime, :types, %{
-  "text/swiftui" => ["swiftui"],
   "text/jetpack" => ["jetpack"],
-  "text/styles" => ["styles"]
+  "text/styles" => ["styles"],
+  "text/swiftui" => ["swiftui"]
 }
 
 # LVN - Required, you must configure LiveView Native Stylesheets
 # on where class names shoudl be extracted from
 config :live_view_native_stylesheet,
   content: [
-    swiftui: [
-      "lib/**/*swiftui*"
-    ],
     jetpack: [
       "lib/**/*jetpack*"
+    ],
+    swiftui: [
+      "lib/**/*swiftui*"
     ]
   ],
   output: "priv/static/assets"
@@ -88,13 +88,15 @@ config :live_view_native_stylesheet,
 # LVN - Required, you must configure Phoenix to know how
 # to encode for the swiftui format
 config :phoenix_template, :format_encoders, [
-  swiftui: Phoenix.HTML.Engine,
-  jetpack: Phoenix.HTML.Engine
+  jetpack: Phoenix.HTML.Engine,
+  swiftui: Phoenix.HTML.Engine
 ]
 
 # LVN - Required, you must configure Phoenix so it knows
 # how to compile LVN's neex templates
-config :phoenix, :template_engines, neex: LiveViewNative.Engine
+config :phoenix, :template_engines, [
+  neex: LiveViewNative.Engine
+]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

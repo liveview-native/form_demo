@@ -58,7 +58,10 @@ config :form_demo, FormDemoWeb.Endpoint,
     patterns: [
       ~r"priv/static/(?!uploads/).*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/form_demo_web/(controllers|live|components|styles)/.*(ex|heex|neex)$"
+      ~r"lib/form_demo_web/(controllers|live|components|styles)/.*(ex|heex|neex)$",
+      ~r"lib/form_demo_web/(live|components)/.*neex$",
+      ~r"lib/form_demo_web/styles/*.ex$",
+      ~r"priv/static/*.styles$"
     ]
   ]
 

@@ -35,12 +35,12 @@ defmodule FormDemoNative do
     quote do
       use LiveViewNative.LiveView,
         formats: [
-          :swiftui,
-          :jetpack
+          :jetpack,
+          :swiftui
         ],
         layouts: [
-          swiftui: {FormDemoWeb.Layouts.SwiftUI, :app},
-          jetpack: {FormDemoWeb.Layouts.Jetpack, :app}
+          jetpack: {FormDemoWeb.Layouts.Jetpack, :app},
+          swiftui: {FormDemoWeb.Layouts.SwiftUI, :app}
         ]
 
       unquote(verified_routes())
@@ -106,7 +106,7 @@ defmodule FormDemoNative do
       defmodule MyAppWeb.Layouts.SwiftUI do
         use MyAppNative, [:layout, format: :swiftui]
 
-        embed_tempaltes "layouts_swiftui/*"
+        embed_templates "layouts_swiftui/*"
       end
   '''
   def layout(opts) do
@@ -125,8 +125,9 @@ defmodule FormDemoNative do
     gettext_quoted = quote do
       import FormDemoWeb.Gettext
     end
-
+    
     plugin = LiveViewNative.fetch_plugin!(format)
+
     plugin_component_quoted = try do
       Code.ensure_compiled!(plugin.component)
 
@@ -137,7 +138,7 @@ defmodule FormDemoNative do
       _ -> nil
     end
 
-    live_form_component_quoted = quote do
+    live_form_quoted = quote do
       import LiveViewNative.LiveForm.Component
     end
 
@@ -154,13 +155,13 @@ defmodule FormDemoNative do
     end
 
     [
-      gettext_quoted,
-      plugin_component_quoted,
-      live_form_component_quoted,
-      core_component_quoted,
-      verified_routes()
-    ]
-
+        gettext_quoted,
+        plugin_component_quoted,
+        live_form_quoted,
+        core_component_quoted,
+        verified_routes()
+      ]
+      
   end
 
   @doc """
