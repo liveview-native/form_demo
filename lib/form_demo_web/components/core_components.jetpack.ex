@@ -104,20 +104,6 @@ defmodule FormDemoWeb.CoreComponents.Jetpack do
     """
   end
 
-  # def input(%{type: "TextFieldLink"} = assigns) do
-  #   ~LVN"""
-  #   <VStack alignment="leading">
-  #     <LabeledContent>
-  #       <Text template="label"><%= @label %></Text>
-  #       <TextFieldLink id={@id} name={@name} value={@value} prompt={@prompt} {@rest}>
-  #         <%= @label %>
-  #       </TextFieldLink>
-  #     </LabeledContent>
-  #     <.error :for={msg <- @errors}><%= msg %></.error>
-  #   </VStack>
-  #   """
-  # end
-
   def input(%{type: "DatePicker"} = assigns) do
     ~LVN"""
     <Column>
@@ -188,28 +174,6 @@ defmodule FormDemoWeb.CoreComponents.Jetpack do
     """
   end
 
-  # def input(%{type: "Stepper"} = assigns) do
-  #   ~LVN"""
-  #   <VStack alignment="leading">
-  #     <LabeledContent>
-  #       <Text template="label"><%= @label %></Text>
-  #       <Stepper id={@id} name={@name} value={@value} {@rest}></Stepper>
-  #     </LabeledContent>
-  #     <.error :for={msg <- @errors}><%= msg %></.error>
-  #   </VStack>
-  #   """
-  # end
-
-  # def input(%{type: "TextEditor"} = assigns) do
-  #   ~LVN"""
-  #   <Column alignment="leading">
-  #     <Text template="label"><%= @label %></Text>
-  #     <TextField id={@id} name={@name} value={@value} minLines="3" {@rest} />
-  #     <.error :for={msg <- @errors}><%= msg %></.error>
-  #   </Column>
-  #   """
-  # end
-
   def input(%{type: "TextField"} = assigns) do
     ~LVN"""
     <Column>
@@ -245,18 +209,6 @@ defmodule FormDemoWeb.CoreComponents.Jetpack do
     </Column>
     """
   end
-
-  # def input(%{type: "Radio"} = assigns) do
-  #   ~LVN"""
-  #   <Column>
-  #     <Row verticalAlignment="CenterVertically" style="wrapContentWidth()">
-  #       <RadioButton id={@id} name={@name} selected={Map.get(assigns, :selected, Map.get(assigns, :value))} {@rest} />
-  #       <Text><%= @label %></Text>
-  #     </Row>
-  #     <.error :for={msg <- @errors}><%= msg %></.error>
-  #   </Column>
-  #   """
-  # end
 
   @doc """
   Generates a generic error message.
@@ -453,58 +405,6 @@ defmodule FormDemoWeb.CoreComponents.Jetpack do
     </Button>
     """
   end
-
-  @doc ~S"""
-  Renders a table with generic styling.
-
-  ## Examples
-
-      <.table id="users" rows={@users}>
-        <:col :let={user} label="id"><%= user.id %></:col>
-        <:col :let={user} label="username"><%= user.username %></:col>
-      </.table>
-  """
-  # @doc type: :component
-
-  # attr :id, :string, required: true
-  # attr :rows, :list, required: true
-  # attr :row_id, :any, default: nil, doc: "the function for generating the row id"
-
-  # attr :row_item, :any,
-  #   default: &Function.identity/1,
-  #   doc: "the function for mapping each row before calling the :col and :action slots"
-
-  # slot :col, required: true do
-  #   attr :label, :string
-  # end
-
-  # slot :action, doc: "the slot for showing user actions in the last table column"
-
-  # def table(assigns) do
-  #   ~LVN"""
-  #   <Table id={@id}>
-  #     <Group template="columns">
-  #       <TableColumn :for={col <- @col}><%= col[:label] %></TableColumn>
-  #       <TableColumn :if={@action != []} />
-  #     </Group>
-  #     <Group template="rows">
-  #       <TableRow
-  #         :for={{row, i} <- Enum.with_index(@rows)}
-  #         id={(@row_id && @row_id.(row)) || i}
-  #       >
-  #         <VStack :for={col <- @col}>
-  #           <%= render_slot(col, @row_item.(row)) %>
-  #         </VStack>
-  #         <HStack :if={@action != []}>
-  #           <%= for action <- @action do %>
-  #             <%= render_slot(action, @row_item.(row)) %>
-  #           <% end %>
-  #         </HStack>
-  #       </TableRow>
-  #     </Group>
-  #   </Table>
-  #   """
-  # end
 
   @doc """
   Renders a data list.

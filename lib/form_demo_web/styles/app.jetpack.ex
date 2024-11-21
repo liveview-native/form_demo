@@ -6,23 +6,6 @@ defmodule FormDemoWeb.Styles.App.Jetpack do
   # Refer to your client's documentation on what the proper syntax
   # is for defining rules within classes
   ~SHEET"""
-  "main-bg" do
-    background(Color.Yellow)
-  end
-
-  "box-blue" do
-    background(Color.Blue, CircleShape)
-    size(200.dp, 150.dp)
-  end
-
-  "box-animated" do
-    animateContentSize(finishedListener: event("onAnimationFinished"))
-  end
-
-  "bottom-aligned" do
-    align(Alignment.BottomEnd)
-  end
-
   """
 
   # If you need to have greater control over how your style rules are created

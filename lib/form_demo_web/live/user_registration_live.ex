@@ -80,25 +80,6 @@ defmodule FormDemoWeb.UserRegistrationLive do
     {:noreply, assign_form(socket, Map.put(changeset, :action, :validate))}
   end
 
-  def handle_event("navigateToLogin", _params, socket) do
-    {:noreply, push_navigate(socket, to: "/users/log_in")}
-  end
-
-  def handle_event("toggleVisibility", param, socket) do
-    {:noreply, assign(socket, :isVisible, param)}
-  end
-
-  def handle_event("buttonSize", param, socket) do
-    newSize = if socket.assigns.isExpanded == "true" do "false" else "true" end
-    {:noreply, assign(socket, :isExpanded, newSize)}
-  end
-
-  def handle_event("onAnimationFinished", param, socket) do
-    IO.puts "onAnimationFinished"
-    IO.inspect param
-    {:noreply, socket}
-  end
-
   defp assign_form(socket, %Ecto.Changeset{} = changeset) do
     form = to_form(changeset, as: "user")
 
