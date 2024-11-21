@@ -38,6 +38,8 @@ defmodule FormDemoWeb.UserRegistrationLive do
         <:actions>
           <.button phx-disable-with="Creating account..." class="w-full">Create an account</.button>
         </:actions>
+
+        <button phx-click="navigateToSettings">Ok</button>
       </.simple_form>
     </div>
     """
@@ -49,6 +51,8 @@ defmodule FormDemoWeb.UserRegistrationLive do
     socket =
       socket
       |> assign(trigger_submit: false, check_errors: false)
+      |> assign(:isVisible, "true")
+      |> assign(:isExpanded, "true")
       |> assign_form(changeset)
 
     {:ok, socket, temporary_assigns: [form: nil]}
