@@ -39,7 +39,7 @@ defmodule FormDemo.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 4.0"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 0.20.2"},
+      {:phoenix_live_view, "~> 1.0.1"},
       {:floki, ">= 0.30.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.8.3"},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
@@ -59,10 +59,9 @@ defmodule FormDemo.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.2"},
-      {:live_view_native, github: "liveview-native/live_view_native", branch: "main"},
+      {:live_view_native, github: "liveview-native/live_view_native", branch: "main", override: true},
       {:live_view_native_stylesheet, github: "liveview-native/live_view_native_stylesheet", branch: "main", override: true},
-      {:live_view_native_swiftui, github: "liveview-native/liveview-client-swiftui", branch: "main"},
-      {:live_view_native_utility_classes, github: "liveview-native/live_view_native_utility_classes", branch: "main"}
+      {:live_view_native_swiftui, github: "liveview-native/liveview-client-swiftui", branch: "main"}
     ]
   end
 
